@@ -28,3 +28,9 @@ html, body {
 .pointer {
     cursor: pointer;
 }
+
+.overflow {
+    height: 600px;
+    width: 350px;
+    overflow: scroll;
+}

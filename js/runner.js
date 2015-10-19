@@ -122,6 +122,10 @@ var Place = function(data) {
             maxWidth: 250
         });
         this.renderMarkers(self.placeList());
+        // Use filteredItems to render markers
+  	    this.filteredItems.subscribe(function(){
+		    self.renderMarkers(self.filteredItems());
+  	    });
     };
     ViewModel.prototype.clearMarkers = function() {
         for (var i = 0; i < this.markers.length; i++) {
@@ -147,6 +151,8 @@ var Place = function(data) {
             });
             this.markers.push(marker);
             this.markers[i].setMap(this.map);
+            // click event
+            marker.addListener('click', this.activateMarker(marker, context, infowindow));
         }
     };
     // activate marker when menu list is clicked
@@ -197,14 +203,15 @@ var Place = function(data) {
                     imageObjList.push.apply(
                         imageObjList, arguments[i][0].data);
                 }
-                // display three images
-                imageObjList = imageObjList.slice(0, 3);
+                // display six images
+                imageObjList = imageObjList.slice(0, 6);
                 var imageContainer = $('<div>');
                 for (var i = 0; i < imageObjList.length; i++) {
                     imageContainer.append('<div class="igDiv"><a href="' + imageObjList[i].link + '"><img src="' + imageObjList[i].images.low_resolution.url + '" /></a></div>');
+                    $('#imageArea').empty();
+                    $(imageContainer).appendTo('#imageArea');
                 }
                 infoBox.hide();
-                $('#imageArea').html(imageContainer);
             });
         });
     };
