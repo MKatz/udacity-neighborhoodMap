@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="img/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <title>Brookside Brunch</title>
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="row search">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    Brunch on Brookside
+                </div>
+                <div class="panel-body">
+                    <form>
+                        <div class="form-group">
+                            <input class="form-control" data-bind="value: search, valueUpdate: 'afterkeydown'" id="searchbar" name="searchbar" placeholder="Filter Brookside Brunch Joints" type="text">
+                        </div>
+                    </form>
+                    <strong>Select a restaurant from the list to view details and the latest Instagram pictures</strong>
+                    <hr>
+                    <ul class="pointer" data-bind=
+                    "foreach: filteredItems">
+                        <li data-bind="text: $data.name, click: $parent.setPlace"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row pictures">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    Instagram pictures
+                </div>
+                <div class="panel-body">
+                    <strong id="igInfo">Select A Restaurant from the list on the left</strong>
+                    <div class="img-responsive" id="imageArea"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="map"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCylZwYSHW3IQJlTiknjrRv76_9xgFu-5U"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/knockout/dist/knockout.js"></script>
+    <script src="js/runner.js"></script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#map {
+    height: 100%;
+    z-index: -1;
+}
+
+.search {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    width: 500px;
+    height: auto;
+}
+
+.pictures {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    width: 350px;
+    height: auto;
+}
+
+.pointer {
+    cursor: pointer;
+}
