@@ -152,7 +152,17 @@ var Place = function(data) {
             this.markers.push(marker);
             this.markers[i].setMap(this.map);
             // click event
-            marker.addListener('click', this.activateMarker(marker, context, infowindow));
+            marker.addListener('click', this.activateMarker(marker, context, infowindow, i));
+
+
+            marker.addListener('click', function () {
+               console.log('hi');
+               // this.activateMarker could go here.
+
+           });
+
+
+
         }
     };
     // activate marker when menu list is clicked
