@@ -71,7 +71,6 @@ var Place = function(data) {
             self.activateMarker(self.markers[index], self, self.infowindow)();
             // Instagram API call
             self.instagramImg(clickedPlace.lat, clickedPlace.lng);
-
         };
         // place filter
         this.filteredItems = ko.computed(function() {
@@ -148,25 +147,21 @@ var Place = function(data) {
                 position: location,
                 map: this.map,
                 animation: google.maps.Animation.DROP,
+                myPlace: placeToShow[i]
             });
             this.markers.push(marker);
             this.markers[i].setMap(this.map);
             // click event
-            marker.addListener('click', this.activateMarker(marker, context, infowindow, i));
-
-
-            marker.addListener('click', function () {
-               console.log('hi');
-               // this.activateMarker could go here.
-
-           });
-
-
-
+            (function () {
+                var myMarker = marker;
+                myMarker.addListener('click', function () {
+                    context.setPlace(myMarker.myPlace);
+                });
+            })();
         }
     };
     // activate marker when menu list is clicked
-    ViewModel.prototype.activateMarker = function(marker, context, infowindow, index) {
+    ViewModel.prototype.activateMarker = function(marker, context, infowindow) {
         return function() {
             infowindow.close();
             infowindow.open(context.map, marker);
