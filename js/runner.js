@@ -53,6 +53,7 @@ var Place = function(data) {
     var ViewModel = function() {
         var self = this;
         this.placeList = ko.observableArray([]);
+        this.igImages = ko.observableArray([]);
         this.search = ko.observable('');
         // Create place object. Push to array.
         place.forEach(function(item) {
@@ -210,12 +211,14 @@ var Place = function(data) {
                 }
                 // display six images
                 imageObjList = imageObjList.slice(0, 6);
-                var imageContainer = $('<div>');
+                $('#imageArea').empty();
+                var imageContainer = $('#imageArea');
                 for (var i = 0; i < imageObjList.length; i++) {
                     imageContainer.append('<div class="igDiv"><a href="' + imageObjList[i].link + '"><img src="' + imageObjList[i].images.low_resolution.url + '" /></a></div>');
-                    $('#imageArea').empty();
-                    $(imageContainer).appendTo('#imageArea');
+                    // $('#imageArea').empty();
+                    // $(imageContainer).appendTo('#imageArea');
                 }
+                self.igImages.push(imageContainer);
                 infoBox.hide();
             });
         });
