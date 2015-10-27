@@ -175,6 +175,7 @@ var Place = function(data) {
     };
     // Instagram API
     ViewModel.prototype.instagramImg = function(lat, lng) {
+        var self = this;
         var igLat = lat,
             igLng = lng,
             locationURLList = [],
@@ -212,13 +213,15 @@ var Place = function(data) {
                 // display six images
                 imageObjList = imageObjList.slice(0, 6);
                 $('#imageArea').empty();
-                var imageContainer = $('#imageArea');
+                // var imageContainer = $('#imageArea');
                 for (var i = 0; i < imageObjList.length; i++) {
-                    imageContainer.append('<div class="igDiv"><a href="' + imageObjList[i].link + '"><img src="' + imageObjList[i].images.low_resolution.url + '" /></a></div>');
+                    // imageContainer.append('<div class="igDiv"><a href="' + imageObjList[i].link + '"><img src="' + imageObjList[i].images.low_resolution.url + '" /></a></div>');
                     // $('#imageArea').empty();
                     // $(imageContainer).appendTo('#imageArea');
+                    self.igImages.push(imageObjList[i].images.low_resolution.url);
+                    console.log(imageObjList[i].images.low_resolution.url);
                 }
-                self.igImages.push(imageContainer);
+                // self.igImages.push(imageContainer);
                 infoBox.hide();
             });
         });

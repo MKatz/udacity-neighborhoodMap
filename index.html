@@ -39,7 +39,10 @@
                 </div>
                 <div class="panel-body overflow">
                     <strong id="igInfo">Select A Restaurant from the list on the left</strong>
-                    <div class="img-responsive" id="imageArea"></div>
+                    <div class="img-responsive" id="imageArea" data-bind=
+                    "foreach: igImages">
+                        <img data-bind="attr: {src: igImages}" />
+                    </div>
                 </div>
             </div>
         </div>
