@@ -13,35 +13,49 @@
 <body>
     <div class="container">
         <div class="row search">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    Brunch on Brookside
-                </div>
-                <div class="panel-body">
-                    <form>
-                        <div class="form-group">
-                            <input class="form-control" data-bind="value: search, valueUpdate: 'afterkeydown'" id="searchbar" name="searchbar" placeholder="Filter Brookside Brunch Joints" type="text">
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" role="tab" id="headingTwo">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Brunch on Brookside
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+                        <div class="panel-body">
+                            <form>
+                                <div class="form-group">
+                                    <input class="form-control" data-bind="value: search, valueUpdate: 'afterkeydown'" id="searchbar" name="searchbar" placeholder="Filter Brookside Brunch Joints" type="text">
+                                </div>
+                            </form>
+                            <strong>Select a restaurant from the list to view details and the latest Instagram pictures</strong>
+                            <hr>
+                            <ul class="pointer" data-bind="foreach: filteredItems">
+                                <li data-bind="text: $data.name, click: $parent.setPlace"></li>
+                            </ul>
                         </div>
-                    </form>
-                    <strong>Select a restaurant from the list to view details and the latest Instagram pictures</strong>
-                    <hr>
-                    <ul class="pointer" data-bind=
-                    "foreach: filteredItems">
-                        <li data-bind="text: $data.name, click: $parent.setPlace"></li>
-                    </ul>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="row pictures">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    Instagram pictures
-                </div>
-                <div class="panel-body overflow">
-                    <strong id="igInfo">Select A Restaurant from the list on the left</strong>
-                    <div class="img-responsive" id="imageArea" data-bind=
-                    "foreach: igImages">
-                        <img data-bind="attr: {src: igImages}" />
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                Instagram Images
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body overflow">
+                            <strong id="igInfo">Select A Restaurant from the list on the left</strong>
+                            <div class="img-responsive" id="imageArea" data-bind="foreach: igImages">
+                                <img data-bind="attr:{src: $data}" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

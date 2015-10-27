@@ -106,17 +106,21 @@ var Place = function(data) {
                 visibility: "off"
             }]
         }];
-        this.map = new google.maps.Map(document.getElementById('map'), {
-            center: {
-                lat: 36.114251,
-                lng: -95.975714
-            },
-            zoom: 18,
-            mapTypeControl: false,
-            scrollwheel: false,
-            styles: styleArray,
-            streetViewControl: false
-        });
+        if(this.map = true){
+            this.map = new google.maps.Map(document.getElementById('map'), {
+                center: {
+                    lat: 36.114251,
+                    lng: -95.975714
+                },
+                zoom: 18,
+                mapTypeControl: false,
+                scrollwheel: false,
+                styles: styleArray,
+                streetViewControl: false
+            });
+        } else {
+            alert('Google Maps Error');
+        }
         this.markers = [];
         this.infowindow = new google.maps.InfoWindow({
             maxWidth: 250
@@ -205,24 +209,23 @@ var Place = function(data) {
                     url: url
                 });
             })).done(function() {
-                // loop to make image array
-                for (var i = 0; i < arguments.length; i++) {
-                    imageObjList.push.apply(
-                        imageObjList, arguments[i][0].data);
+                if(locationURLList.length > 0) {
+                    // loop to make image array
+                    for (var i = 0; i < arguments.length; i++) {
+                        imageObjList.push.apply(
+                            imageObjList, arguments[i][0].data);
+                    }
+                    // display six images
+                    imageObjList = imageObjList.slice(0, 6);
+                    $('#imageArea').empty();
+                    // var imageContainer = $('#imageArea');
+                    for (var i = 0; i < imageObjList.length; i++) {
+                        self.igImages.push(imageObjList[i].images.low_resolution.url);
+                    }
+                    infoBox.hide();
+                } else {
+                    alert('Instagram API Error');
                 }
-                // display six images
-                imageObjList = imageObjList.slice(0, 6);
-                $('#imageArea').empty();
-                // var imageContainer = $('#imageArea');
-                for (var i = 0; i < imageObjList.length; i++) {
-                    // imageContainer.append('<div class="igDiv"><a href="' + imageObjList[i].link + '"><img src="' + imageObjList[i].images.low_resolution.url + '" /></a></div>');
-                    // $('#imageArea').empty();
-                    // $(imageContainer).appendTo('#imageArea');
-                    self.igImages.push(imageObjList[i].images.low_resolution.url);
-                    console.log(imageObjList[i].images.low_resolution.url);
-                }
-                // self.igImages.push(imageContainer);
-                infoBox.hide();
             });
         });
     };
