@@ -162,6 +162,15 @@ var Place = function(data) {
                 myMarker.addListener('click', function () {
                     context.setPlace(myMarker.myPlace);
                 });
+                myMarker.addListener('click', toggleBounce);
+                function toggleBounce() {
+                    if (myMarker.getAnimation() !== null) {
+                        myMarker.setAnimation(null);
+                    } else {
+                        myMarker.setAnimation(google.maps.Animation.BOUNCE);
+                        setTimeout(toggleBounce, 2500);
+                    }
+                }
             })();
         }
     };
@@ -218,7 +227,6 @@ var Place = function(data) {
                     // display six images
                     imageObjList = imageObjList.slice(0, 6);
                     $('#imageArea').empty();
-                    // var imageContainer = $('#imageArea');
                     for (var i = 0; i < imageObjList.length; i++) {
                         self.igImages.push(imageObjList[i].images.low_resolution.url);
                     }
