@@ -49,7 +49,7 @@ var Place = function(data) {
     this.phone = data.phone;
     this.description = data.description;
 };
-(function() {
+function initMap() {
     var ViewModel = function() {
         var self = this;
         this.placeList = ko.observableArray([]);
@@ -238,4 +238,4 @@ var Place = function(data) {
         });
     };
     ko.applyBindings(new ViewModel());
-})();
+} initMap();
