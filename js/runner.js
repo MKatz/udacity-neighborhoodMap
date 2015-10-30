@@ -1,3 +1,4 @@
+var map;
 var place = [{
     name: "Doc's Wine & Food",
     lat: 36.113242,
@@ -62,29 +63,97 @@ function initMap() {
         // set first place
         this.currentPlace = ko.observable(this.placeList()[0]);
         // list click
+        // this.setPlace = function(clickedPlace) {
+        //     self.currentPlace(clickedPlace);
+        //     // find and store clicked place
+        //     var index = self.filteredItems().indexOf(clickedPlace);
+        //     // ready for infowindow
+        //     self.updateContent(clickedPlace);
+        //     // activate the marker
+        //     self.activateMarker(self.markers[index], self, self.infowindow)();
+        //     // Instagram API call
+        //     self.instagramImg(clickedPlace.lat, clickedPlace.lng);
+        // };
         this.setPlace = function(clickedPlace) {
-            self.currentPlace(clickedPlace);
-            // find and store clicked place
-            var index = self.filteredItems().indexOf(clickedPlace);
-            // ready for infowindow
-            self.updateContent(clickedPlace);
-            // activate the marker
-            self.activateMarker(self.markers[index], self, self.infowindow)();
-            // Instagram API call
-            self.instagramImg(clickedPlace.lat, clickedPlace.lng);
+            google.maps.event.trigger(clickedPlace.marker, 'click');
         };
-        // place filter
+        this.renderMarkers = function(arrayInput) {
+            // use place array to create marker array
+            for (var i = 0, len = arrayInput.length; i < len; i++) {
+                var location = {
+                    lat: arrayInput[i].lat,
+                    lng: arrayInput[i].lng
+                };
+                var marker = new google.maps.Marker({
+                    position: location,
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    myPlace: arrayInput[i]
+                });
+                // save the map marker as part of the location object
+                arrayInput[i].marker = marker;
+                // create event listener in external function
+                self.createEventListener(arrayInput[i]);
+            };
+        };
+        function toggleBounce(myMarker) {
+            myMarker.setAnimation(google.maps.Animation.BOUNCE);
+            setTimeout(function() {
+                myMarker.setAnimation(null);
+            }, 2500);
+        }
+        this.createEventListener = function(location) {
+            location.marker.addListener('click', function () {
+                toggleBounce(location.marker);
+                self.currentPlace(location);
+                self.updateContent(location);
+                self.instagramImg(location.lat, location.lng);
+
+                // does the infowindow exist?
+                if (self.infowindow) {
+                    self.infowindow.close(); // close the infowindow
+                }
+                // open the infowindow with this map marker location
+                self.infowindow.open(map, location.marker);
+            });
+        };
         this.filteredItems = ko.computed(function() {
             var searchTerm = self.search().toLowerCase();
-            if (!searchTerm) {
-                return self.placeList();
+            // is the search term undefined or empty?
+            if (!searchTerm || searchTerm === '') {
+                // for each location
+                for (var i = 0; i < self.placeList().length; i++) {
+                    // does the map marker exist?
+                    if (self.placeList()[i].marker !== undefined) {
+                        self.placeList()[i].marker.setVisible(true); // show the map marker
+                    }
+                }
+                return self.placeList(); // return location list
             } else {
                 return ko.utils.arrayFilter(self.placeList(),
                     function(item) {
-                        return item.name.toLowerCase().indexOf(searchTerm) !== -1;
+                        // does the place name contain the search term?
+                        if (item.name.toLowerCase().indexOf(searchTerm) < 0) {
+                            item.marker.setVisible(false); // hide the map marker
+                        } else {
+                            item.marker.setVisible(true); // show the map marker
+                        }
+                        return item.name.toLowerCase().indexOf(searchTerm) !== -1; // return filtered location list
                     });
             }
         });
+        // place filter
+        // this.filteredItems = ko.computed(function() {
+        //     var searchTerm = self.search().toLowerCase();
+        //     if (!searchTerm) {
+        //         return self.placeList();
+        //     } else {
+        //         return ko.utils.arrayFilter(self.placeList(),
+        //             function(item) {
+        //                 return item.name.toLowerCase().indexOf(searchTerm) !== -1;
+        //             });
+        //     }
+        // });
         // Google Maps
         var styleArray = [{
             featureType: "all",
@@ -106,8 +175,8 @@ function initMap() {
                 visibility: "off"
             }]
         }];
-        if(this.map = true){
-            this.map = new google.maps.Map(document.getElementById('map'), {
+        if(map = true){
+            map = new google.maps.Map(document.getElementById('map'), {
                 center: {
                     lat: 36.114251,
                     lng: -95.975714
@@ -150,12 +219,12 @@ function initMap() {
             };
             var marker = new google.maps.Marker({
                 position: location,
-                map: this.map,
+                map: map,
                 animation: google.maps.Animation.DROP,
                 myPlace: placeToShow[i]
             });
             this.markers.push(marker);
-            this.markers[i].setMap(this.map);
+            this.markers[i].setMap(map);
             // click event
             (function () {
                 var myMarker = marker;
@@ -235,6 +304,8 @@ function initMap() {
                     alert('Instagram API Error');
                 }
             });
+        }).error(function() {
+            alert('Instagram API Error');
         });
     };
     ko.applyBindings(new ViewModel());
