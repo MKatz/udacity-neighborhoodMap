@@ -63,17 +63,6 @@ function initMap() {
         // set first place
         this.currentPlace = ko.observable(this.placeList()[0]);
         // list click
-        // this.setPlace = function(clickedPlace) {
-        //     self.currentPlace(clickedPlace);
-        //     // find and store clicked place
-        //     var index = self.filteredItems().indexOf(clickedPlace);
-        //     // ready for infowindow
-        //     self.updateContent(clickedPlace);
-        //     // activate the marker
-        //     self.activateMarker(self.markers[index], self, self.infowindow)();
-        //     // Instagram API call
-        //     self.instagramImg(clickedPlace.lat, clickedPlace.lng);
-        // };
         this.setPlace = function(clickedPlace) {
             google.maps.event.trigger(clickedPlace.marker, 'click');
         };
@@ -108,7 +97,6 @@ function initMap() {
                 self.currentPlace(location);
                 self.updateContent(location);
                 self.instagramImg(location.lat, location.lng);
-
                 // does the infowindow exist?
                 if (self.infowindow) {
                     self.infowindow.close(); // close the infowindow
@@ -142,18 +130,6 @@ function initMap() {
                     });
             }
         });
-        // place filter
-        // this.filteredItems = ko.computed(function() {
-        //     var searchTerm = self.search().toLowerCase();
-        //     if (!searchTerm) {
-        //         return self.placeList();
-        //     } else {
-        //         return ko.utils.arrayFilter(self.placeList(),
-        //             function(item) {
-        //                 return item.name.toLowerCase().indexOf(searchTerm) !== -1;
-        //             });
-        //     }
-        // });
         // Google Maps
         var styleArray = [{
             featureType: "all",
@@ -190,65 +166,11 @@ function initMap() {
         } else {
             alert('Google Maps Error');
         }
-        this.markers = [];
+        // this.markers = [];
         this.infowindow = new google.maps.InfoWindow({
             maxWidth: 250
         });
         this.renderMarkers(self.placeList());
-        // Use filteredItems to render markers
-  	    this.filteredItems.subscribe(function(){
-		    self.renderMarkers(self.filteredItems());
-  	    });
-    };
-    ViewModel.prototype.clearMarkers = function() {
-        for (var i = 0; i < this.markers.length; i++) {
-            this.markers[i].setMap(null);
-        }
-        this.markers = [];
-    };
-    ViewModel.prototype.renderMarkers = function(arrayInput) {
-        this.clearMarkers();
-        var infowindow = this.infowindow;
-        var context = this;
-        var placeToShow = arrayInput;
-        // use place array to create marker array
-        for (var i = 0, len = placeToShow.length; i < len; i++) {
-            var location = {
-                lat: placeToShow[i].lat,
-                lng: placeToShow[i].lng
-            };
-            var marker = new google.maps.Marker({
-                position: location,
-                map: map,
-                animation: google.maps.Animation.DROP,
-                myPlace: placeToShow[i]
-            });
-            this.markers.push(marker);
-            this.markers[i].setMap(map);
-            // click event
-            (function () {
-                var myMarker = marker;
-                myMarker.addListener('click', function () {
-                    context.setPlace(myMarker.myPlace);
-                });
-                myMarker.addListener('click', toggleBounce);
-                function toggleBounce() {
-                    if (myMarker.getAnimation() !== null) {
-                        myMarker.setAnimation(null);
-                    } else {
-                        myMarker.setAnimation(google.maps.Animation.BOUNCE);
-                        setTimeout(toggleBounce, 2500);
-                    }
-                }
-            })();
-        }
-    };
-    // activate marker when menu list is clicked
-    ViewModel.prototype.activateMarker = function(marker, context, infowindow) {
-        return function() {
-            infowindow.close();
-            infowindow.open(context.map, marker);
-        };
     };
     // infowindow content
     ViewModel.prototype.updateContent = function(place) {
